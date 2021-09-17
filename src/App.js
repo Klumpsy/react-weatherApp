@@ -8,7 +8,7 @@ const apiKey = {
 
 function App() {
   const [query, setQuery] = useState('');
-  const [weater, setWeather] = useState({})
+  const [weather, setWeather] = useState({})
 
   const search = event => {
     if (event.key === 'Enter') { 
@@ -27,7 +27,7 @@ function App() {
                   "August", "September", "Oktober", "November", "December"]; 
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]; 
 
-    let day = days[date.getDay()]; 
+    let day = days[date.getDay() - 1]; 
     let completeDate = date.getDate(); 
     let month = months[date.getMonth()]; 
     let year = date.getFullYear(); 
@@ -36,31 +36,36 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <div className= {(typeof weather.main != "undefined" ? (weather.main.temp <= 5 ? "app winter" : 
+                      weather.main.temp < 12 && weather.main.temp > 5 ? "app authumn" :
+                      weather.main.temp > 12 && weather.main.temp < 20 ? "app spring" : 
+                      "app summer") : 'app')} >
       <main>
         <div className = "search-box">
           <input 
           type="text"
           className ="search-bar"
-          placeholder = "Search..."
+          placeholder = "Search for city..."
           onChange = {event => setQuery(event.target.value)}
           value = {query}
           onKeyPress={search}
           />
         </div>
-        <div className ="location-box">
-          <div className ="location">Sibculo, EU</div>
-          <div className = "date">{dateBuilder(new Date())}</div>
+        {(typeof weather.main != "undefined") ? (
+        <div>
+          <div className ="location-box">
+            <div className ="location">{weather.name}, {weather.sys.country}</div>
+            <div className = "date">{dateBuilder(new Date())}</div>
+          </div>
+          <div className = "weather-box">
+            <div className="temperature">{Math.floor(weather.main.temp)}℃</div>
+            <div className="weather">{weather.weather[0].description}</div>
+          </div>
         </div>
-        <div className = "weather-box">
-          <div className="temperature">15℃</div>
-          <div className="weather">Sunny</div>
-        </div>
+       ) : ('')}
       </main>
     </div>
   );
 }
 
 export default App;
-
-//https://www.youtube.com/watch?v=GuA0_Z1llYU
