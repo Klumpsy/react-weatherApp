@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+//Should be in .env file but this can be public for now. 
 const apiKey = { 
   key: "26da5c73fe5e9d9f520565e4253a0ddb", 
   base: "https://api.openweathermap.org/data/2.5/"
